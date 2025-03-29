@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+
+  class Notification {
+    constructor(recipient,message){
+        this.recipient= recipient;
+        this.message= message;
+    }
+  }
+  class NotificationChannel {
+    send(notification) {
+        throw new Error("send() must be implemented by subclasses");
+    }
+  }
+  class EmailNotificationChannel extends NotificationChannel{
+    send(notification) {
+        console.log(`sending Email to  ${notification. recipient}: ${notification.message}`);
+    }
+  }
+  class SMSNotificationChannel extends NotificationChannel {
+    send(notification) {
+        console.log(`sending SMS to ${notification.recipient} : ${notification.messaage}`);
+    }
+  }
+
+  class PushNotificationChannel extends NotificationChannel {
+    send(notification) {
+        console.log(`sending push notification of ${notification.recipient} :${notification.message}`);
+    }
+
+  }
+  
+
+  class NotificationLogger {
+    log(notification) {
+        console.log(`logged Notification for ${notification.recipient}: #{notification.message}`);
+    }
+  }
+
+  class NotificationService {
+    constructor(channel, logger) {
+        this.channle= channel;
+        this.logger= logger;
+        }
+        sendNotification(notification) {
+            this.channle.send(notification);
+            this.logger.log(notification);
+        }
+  }
+
+  const notification= new Notification("Himanshu arya", "Your order has been shipped");
+  const emailChannel= new EmailNotificationChannel();
+  const logger = new NotificationLogger();
+  const emailService= new NotificationService(emailChannel,logger);
+  emailService.sendNotification(notification);
+
+
+  const smsChannel= new SMSNotificationChannel();
+  const smsService= new NotificationService(smsChannel,logger);
+  smsService.sendNotification(notification);
+  const pushChannel= new PushNotificationChannel();
+  const pushService= new NotificationService(pushChannel,logger);
+  pushService.sendNotification(notification);
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
